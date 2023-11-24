@@ -24,7 +24,7 @@
 		beq 	$t0,0, exit				
 		beq 	$t0,1, mi_to_km
 		beq 	$t0,2, f_to_c
-		#beq 	$t0,3, case3	
+		beq 	$t0,3, ohms_law	
 
 	mi_to_km:
 		l.s $f1, mi_const
@@ -53,6 +53,42 @@
 		div.s $f12, $f12, $f2
 		
 		# Print converted result
+		li $v0, 2
+		syscall
+		
+	ohms_law:
+		# Read input for V as float
+		li $v0, 6
+		syscall
+		
+		mov.s $f1, $f0
+		
+		# Read input for R1 as float
+		li $v0, 6
+		syscall
+		
+		mov.s $f2, $f0
+		
+		# Read input for R2 as float
+		li $v0, 6
+		syscall
+		
+		mov.s $f3, $f0
+		
+		# Read input for R3 as float
+		li $v0, 6
+		syscall
+		
+		mov.s $f4, $f0
+		
+		# Find total resistance
+		add.s $f5, $f2, $f3
+		add.s $f5, $f5, $f4
+		
+		# Find total current in circuit
+		div.s $f12, $f1, $f5
+		
+		# Print total current in circuit
 		li $v0, 2
 		syscall
 		
