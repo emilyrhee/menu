@@ -1,11 +1,20 @@
 .data
-	menu: .asciiz "\n\n********************** Main Menu **********************\n (1) Option 1\n (2) Option 2\n (3) Option 3\n (0) Exit\nPlease enter an option: "
+	menu: .asciiz "\n\n********************** Main Menu **********************\n (1) Miles to kilometers\n (2) Fahrenheit to Celsius\n (3) Current in circuit\n (0) Exit\nPlease enter an option: "
 
 	mi_const: .float 1.609
 	
 	thirty_two: .float 32.0
 	f_const: .float 1.8
 
+	v_prompt: .asciiz "Enter voltage: "
+	r1_prompt: .asciiz "Enter resistance at R1: "
+	r2_prompt: .asciiz "Enter resistance at R2: "
+	r3_prompt: .asciiz "Enter resistance at R3: "
+	total_current: .asciiz "\nTotal current in circuit: "
+	v_at_r1: .asciiz "\nVoltage across R1: "
+	v_at_r2: .asciiz "\nVoltage across R2: "
+	v_at_r3: .asciiz "\nVoltage across R3: "
+	
 .text
 .globl main
 
@@ -57,11 +66,21 @@
 		syscall
 		
 	ohms_law:
+		# Print prompt for V
+		la $a0, v_prompt
+		li $v0, 4
+		syscall
+		
 		# Read input for V as float
 		li $v0, 6
 		syscall
 		
 		mov.s $f1, $f0
+		
+		# Print prompt for R1
+		la $a0, r1_prompt
+		li $v0, 4
+		syscall
 		
 		# Read input for R1 as float
 		li $v0, 6
@@ -69,11 +88,21 @@
 		
 		mov.s $f2, $f0
 		
+		# Print prompt for R1
+		la $a0, r2_prompt
+		li $v0, 4
+		syscall
+		
 		# Read input for R2 as float
 		li $v0, 6
 		syscall
 		
 		mov.s $f3, $f0
+
+		# Print prompt for R1
+		la $a0, r3_prompt
+		li $v0, 4
+		syscall
 		
 		# Read input for R3 as float
 		li $v0, 6
@@ -88,7 +117,46 @@
 		# Find total current in circuit
 		div.s $f12, $f1, $f5
 		
+		mov.s $f6, $f12
+		
 		# Print total current in circuit
+		la $a0, total_current
+		li $v0, 4
+		syscall
+		
+		li $v0, 2
+		syscall
+		
+		# Find voltage at R1
+		mul.s $f12, $f6, $f2
+		
+		# Print voltage at R1
+		la $a0, v_at_r1
+		li $v0, 4
+		syscall
+		
+		li $v0, 2
+		syscall
+		
+		# Find voltage at R2
+		mul.s $f12, $f6, $f3
+		
+		# Print voltage at R2
+		la $a0, v_at_r2
+		li $v0, 4
+		syscall
+		
+		li $v0, 2
+		syscall
+		
+		# Find voltage at R3
+		mul.s $f12, $f6, $f4
+		
+		# Print voltage at R3
+		la $a0, v_at_r3
+		li $v0, 4
+		syscall
+		
 		li $v0, 2
 		syscall
 		
