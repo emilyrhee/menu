@@ -1,12 +1,16 @@
 .data
 	menu: .asciiz "\n\n********************** Main Menu **********************\n (1) Miles to kilometers\n (2) Fahrenheit to Celsius\n (3) Current in circuit\n (0) Exit\nPlease enter an option: "
 
+	mi_prompt: .asciiz "\nEnter miles: "
 	mi_const: .float 1.609
+	km_result: .asciiz "Distance in km: "
 	
+	f_prompt: .asciiz "\nEnter temperature in F: "
 	thirty_two: .float 32.0
 	f_const: .float 1.8
+	c_result: .asciiz "Temperature in C: "
 
-	v_prompt: .asciiz "Enter voltage: "
+	v_prompt: .asciiz "\nEnter voltage: "
 	r1_prompt: .asciiz "Enter resistance at R1: "
 	r2_prompt: .asciiz "Enter resistance at R2: "
 	r3_prompt: .asciiz "Enter resistance at R3: "
@@ -38,6 +42,11 @@
 	mi_to_km:
 		l.s $f1, mi_const
 		
+		# Print prompt
+		la $a0, mi_prompt
+		li $v0, 4
+		syscall
+		
 		# Read user input as a float
 		li $v0, 6
 		syscall
@@ -46,12 +55,23 @@
 		mul.s $f12, $f0, $f1
 		
 		# Print converted result
+		la $a0, km_result
+		li $v0, 4
+		syscall
+		
 		li $v0, 2
 		syscall
+		
+		b main
 		
 	f_to_c:
 		l.s $f1, thirty_two
 		l.s $f2, f_const
+		
+		# Print prompt
+		la $a0, f_prompt
+		li $v0, 4
+		syscall
 		
 		# Read user input as float
 		li $v0, 6
@@ -62,8 +82,14 @@
 		div.s $f12, $f12, $f2
 		
 		# Print converted result
+		la $a0, c_result
+		li $v0, 4
+		syscall
+		
 		li $v0, 2
 		syscall
+		
+		b main
 		
 	ohms_law:
 		# Print prompt for V
@@ -159,6 +185,8 @@
 		
 		li $v0, 2
 		syscall
+		
+		b main
 		
 	exit:
 		li  $v0,10
